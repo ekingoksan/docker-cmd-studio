@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ContainerConfig {
+  id               String   @id @default(uuid())
+  name             String   @unique
+  image            String
+  tag              String   @default("latest")
+  restartPolicy    String?
+  network          String?
+  envVars          Json?
+  ports            Json?
+  volumes          Json?
+  labels           Json?
+  addHosts         Json?
+  extraArgs        String?
+  generatedCommand String?  @db.MediumText
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
